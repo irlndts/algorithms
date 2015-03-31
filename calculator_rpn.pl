@@ -20,14 +20,15 @@ my $dispatch_table = {
 	'/' => sub {
 		my @stack = @_;
 		my ($a,$b) = (pop(@stack),pop(@stack));
+		return ("Division by Zero") if ($a eq 0);
 		push(@stack,($b/$a));
 		return @stack;
 	},
 
 };
 
-
 print rpn_result('1 _1* 1 2 + 3 * +'),"\n";
+
 
 
 #реализация калькулятора обратной польской нотации

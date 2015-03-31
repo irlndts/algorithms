@@ -2,9 +2,8 @@
 
 use strict;
 use warnings;
-#use classes::DATA; 
 
-my $str = " -3+ 1+1+2) * 3 "; 
+my $str = " -3+ (1+1+2) * 3 "; 
 
 my %prec = (
 	'-u'=> 5,
@@ -48,9 +47,7 @@ sub shunting_yard{
 		} elsif($token eq '(') {
 			push(@operators_stack, $token);
 		} elsif($token eq ')') {
-			while(scalar @operators_stack && $operators_stack[-1] ne '(') { #сбрасываем все значения между ( ) в левую часть
-				push(@output, pop(@operators_stack));
-			}
+			push(@output, pop(@operators_stack)) while (scalar @operators_stack && $operators_stack[-1] ne '('); #сбрасываем все значения между ( ) в левую часть
 			unless (scalar @operators_stack && pop(@operators_stack) eq '(') #скобка больше не нужна, удаляем её
 			{
 				print "Can't find (\n"; 
@@ -58,13 +55,9 @@ sub shunting_yard{
 			}; 
 		} elsif((my $pr=getprec($token))>0) { #сортируем токеныё
 			if(exists $right{$token}) {
-				while(scalar @operators_stack>0 && $pr<getprec($operators_stack[-1])) {
-					push(@output, pop(@operators_stack));
-				}
+				push(@output, pop(@operators_stack)) while (scalar @operators_stack>0 && $pr<getprec($operators_stack[-1]));
 			} else {
-				while(scalar @operators_stack>0 && $pr<=getprec($operators_stack[-1])) {
-					push(@output, pop(@operators_stack));
-				}
+				push(@output, pop(@operators_stack)) while (scalar @operators_stack>0 && $pr<=getprec($operators_stack[-1]));
 			}
 			push(@operators_stack, $token);
 		} else {
@@ -74,9 +67,7 @@ sub shunting_yard{
 		$last=$token;
 	}
 	# достигли конца входной строки, собираем левую и правую часть воедино 
-	while(scalar @operators_stack>0) {
-		push(@output, pop(@operators_stack));
-	}
+	push(@output, pop(@operators_stack)) while(scalar @operators_stack>0);
 
 	foreach my $token (@output) { #готовим ответ, если значение -N, то минус обозначаем как _1*
 		if($token eq '-u') {$result .= '_1* ';}
