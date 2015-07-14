@@ -24,7 +24,6 @@ my $dispatch_table = {
 		push(@stack,($b/$a));
 		return @stack;
 	},
-
 };
 
 print rpn_result('1 _1* 1 2 + 3 * +'),"\n";
