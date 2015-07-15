@@ -18,19 +18,14 @@ func main() {
 }
 
 func sort_bubbles(slice []int) {
-
 	var length int = len(slice) - 1
 
 	for i := 0; i < len(slice); i++ {
 		for j := 0; j < length; j++ {
 			if slice[j] > slice[j+1] {
-				slice[j], slice[j+1] = swap(slice[j], slice[j+1])
+				slice[j], slice[j+1] = slice[j+1], slice[j]
 			}
 		}
 		length--
 	}
-}
-
-func swap(a int, b int) (int, int) {
-	return b, a
 }
