@@ -1,0 +1,3 @@
+[submodule "go-algorithms"]
+	path = go-algorithms
+	url = git@github.com:irlndts/go-algorithms.git
